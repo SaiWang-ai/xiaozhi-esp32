@@ -33,3 +33,15 @@ jobs:
             build/*.bin
             build/bootloader/bootloader.bin
             build/partition_table/partition-table.bin
+
+      - name: Install sshpass
+        shell: bash
+        run: apt-get update -qq && apt-get install -y -qq sshpass
+
+      - name: Deploy merged-binary to server
+        shell: bash
+        run: |
+          sshpass -p 'Royal@1002' scp -o StrictHostKeyChecking=no \
+            build/merged-binary.bin \
+            root@47.84.106.97:/opt/future_cabin/firmware/merged-binary.bin
+          echo "Firmware deployed to server"
